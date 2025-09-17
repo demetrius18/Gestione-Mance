@@ -47,25 +47,25 @@ Nessuna mancia inserita
 
 <textarea id="messaggio" readonly placeholder="Messaggio Telegram generato..."></textarea>
 <button onclick="copiaMessaggio()">📋 Copia Messaggio</button>
-<button onclick="apriTelegram()">✈️ Apri Telegram</button>
+<button onclick="apriGruppo()">✈️ Apri Gruppo Telegram</button>
 </div>
 
 <script>
 // Membri con emoji
 const persone = [
-  {nome:"Andrea", emoji:"🧑‍💼"},
-  {nome:"Gaetano", emoji:"👨‍💼"},
-  {nome:"Margen", emoji:"👩‍💼"},
-  {nome:"Simone", emoji:"🧑‍💻"},
-  {nome:"Manuela", emoji:"👩‍💻"},
-  {nome:"Dmitri", emoji:"🧑‍🔧"}
+    {nome:"Andrea", emoji:"🧑‍💼"},
+    {nome:"Gaetano", emoji:"👨‍💼"},
+    {nome:"Margen", emoji:"👩‍💼"},
+    {nome:"Simone", emoji:"🧑‍💻"},
+    {nome:"Manuela", emoji:"👩‍💻"},
+    {nome:"Dmitri", emoji:"🧑‍🔧"}
 ];
 
 // Array per tutti gli importi inseriti
 let importi = [];
 
-// Username Telegram del gruppo
-const telegramUsername = "tuo_gruppo_o_username";
+// Link del gruppo privato Telegram
+const gruppoLink = "https://t.me/+cml5tBEt6tgyOTY8";
 
 function aggiornaStatistiche(){
     if(importi.length === 0){
@@ -111,11 +111,11 @@ function copiaMessaggio(){
     alert("Messaggio copiato! Ora puoi incollarlo nel gruppo Telegram.");
 }
 
-function apriTelegram(){
+function apriGruppo(){
     const messaggio = document.getElementById('messaggio').value;
     if(!messaggio){ alert("Inserisci almeno un importo."); return; }
-    const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(messaggio)}`;
-    window.open(url,'_blank');
+    // Per gruppo privato, apri solo il link
+    window.open(gruppoLink,'_blank');
 }
 </script>
 
