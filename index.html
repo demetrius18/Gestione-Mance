@@ -64,8 +64,8 @@ const persone = [
 // Array per tutti gli importi inseriti
 let importi = [];
 
-// Link del gruppo privato Telegram
-const gruppoLink = "https://t.me/+cml5tBEt6tgyOTY8";
+// Username del gruppo pubblico
+const gruppoUsername = "Gestionemance";
 
 function aggiornaStatistiche(){
     if(importi.length === 0){
@@ -114,8 +114,8 @@ function copiaMessaggio(){
 function apriGruppo(){
     const messaggio = document.getElementById('messaggio').value;
     if(!messaggio){ alert("Inserisci almeno un importo."); return; }
-    // Per gruppo privato, apri solo il link
-    window.open(gruppoLink,'_blank');
+    const url = `https://t.me/${gruppoUsername}?text=${encodeURIComponent(messaggio)}`;
+    window.open(url,'_blank');
 }
 </script>
 
