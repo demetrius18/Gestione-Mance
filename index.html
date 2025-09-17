@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestione Mance Telegram 💰</title>
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #d9f0f0, #a8e0d8);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    color: #333;
+}
+.container {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+h1 { text-align:center; color:#0088cc; margin-bottom:20px; }
+input, button { width:100%; padding:12px; border-radius:15px; border:1px solid #ccc; margin-bottom:10px; font-size:16px; }
+input:focus { border-color:#0088cc; outline:none; }
+button { background:#0088cc; color:white; border:none; font-weight:bold; cursor:pointer; transition:0.3s; }
+button:hover { background:#007bb5; transform:scale(1.03); }
+textarea { width:100%; height:220px; border-radius:15px; border:1px solid #ccc; padding:12px; font-size:16px; resize:none; background:rgba(249,249,249,0.95); white-space:pre-wrap; margin-bottom:10px; }
+.stats { margin:15px 0; padding:10px; background:#e0f7fa; border-radius:12px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>Gestione Mance Telegram 💰</h1>
+
+<label for="importo">Inserisci importo (€):</label>
+<input type="number" id="importo" placeholder="Es. 120">
+<button onclick="aggiungiImporto()">Aggiungi Importo</button>
+
+<div class="stats" id="statistiche">
+<strong>Statistiche:</strong><br>
+Nessuna mancia inserita
+</div>
+
+<textarea id="messaggio" readonly placeholder="Messaggio Telegram generato..."></textarea>
+<button onclick="copiaMessaggio()">📋 Copia Messaggio</button>
+<button onclick="apriTelegram()">✈️ Apri Telegram</button>
+</div>
+
+<script>
+// Membri con emoji
+const persone = [
+  {nome:"Andrea", emoji:"🧑‍💼"},
+  {nome:"Gaetano", emoji:"👨‍💼"},
+  {nome:"Margen", emoji:"👩‍💼"},
+  {nome:"Simone", emoji:"🧑‍💻"},
+  {nome:"Manuela", emoji:"👩‍💻"},
+  {nome:"Dmitri", emoji:"🧑‍🔧"}
+];
+
+// Array per tutti gli importi inseriti
+let importi = [];
+
+// Username Telegram del gruppo
+const telegramUsername = "tuo_gruppo_o_username";
+
+function aggiornaStatistiche(){
+    if(importi.length === 0){
+        document.getElementById('statistiche').innerHTML = "<strong>Statistiche:</strong><br>Nessuna mancia inserita";
+        return;
+    }
+    const totale = importi.reduce((a,b)=>a+b,0);
+    const media = (totale/importi.length).toFixed(2);
+    document.getElementById('statistiche').innerHTML = `<strong>Statistiche:</strong><br>
+    Numero mance: ${importi.length}<br>
+    Totale: €${totale}<br>
+    Media per mance: €${media}`;
+}
+
+function aggiungiImporto(){
+    const val = parseFloat(document.getElementById('importo').value);
+    if(!val){ alert("Inserisci un importo valido."); return; }
+    importi.push(val);
+    document.getElementById('importo').value = "";
+    aggiornaMessaggio();
+    aggiornaStatistiche();
+}
+
+function aggiornaMessaggio(){
+    if(importi.length === 0) return;
+    let totale = importi.reduce((a,b)=>a+b,0);
+    const importoPerPersona = (totale / persone.length).toFixed(2);
+    let messaggio = `📢 *Mancia Totale: €${totale}*\n`;
+    messaggio += `_"Si diceva in un contesto di servizio che, per il cassiere, l'eroe non esiste, ma la sua fatica è evidente."_ \n\n`;
+    messaggio += `💸 *Divisione tra i membri:*\n`;
+    persone.forEach(p=>{
+        messaggio += `🔹 ${p.emoji} ${p.nome} → €${importoPerPersona}\n`;
+    });
+    messaggio += `\n✅ Buon lavoro a tutti!`;
+    document.getElementById('messaggio').value = messaggio;
+}
+
+function copiaMessaggio(){
+    const textarea = document.getElementById('messaggio');
+    textarea.select();
+    textarea.setSelectionRange(0,99999);
+    document.execCommand('copy');
+    alert("Messaggio copiato! Ora puoi incollarlo nel gruppo Telegram.");
+}
+
+function apriTelegram(){
+    const messaggio = document.getElementById('messaggio').value;
+    if(!messaggio){ alert("Inserisci almeno un importo."); return; }
+    const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(messaggio)}`;
+    window.open(url,'_blank');
+}
+</script>
+
+</body>
+</html>
